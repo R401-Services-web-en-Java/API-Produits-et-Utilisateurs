@@ -1,34 +1,25 @@
 package fr.univamu.iut.apiproduitsetutilisateurs;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
+
+import java.net.URI;
 
 @Path("/users")
 @ApplicationScoped
 public class UserResource {
 
-    /**
-     * Service utilisé pour accéder aux données des livres et récupérer/modifier leurs informations
-     */
     private UserAndProductsService service;
 
-    /**
-     * Constructeur par défaut
-     */
     public UserResource(){}
 
-    /**
-     * Constructeur permettant d'initialiser le service avec une interface d'accès aux données
-     * @param userRepo objet implémentant l'interface d'accès aux données
-     */
     public @Inject UserResource(UserAndProductsRepositoryInterface userRepo ){
         this.service = new UserAndProductsService( userRepo) ;
     }
 
-    /**
-     * Constructeur permettant d'initialiser le service d'accès aux livres
-     */
     public UserResource( UserAndProductsService service ){
         this.service = service;
     }
@@ -40,16 +31,30 @@ public class UserResource {
     }
 
     @GET
-    @Path("{id}")
+    @Path("{username}")
     @Produces("application/json")
-    public String getUser( @PathParam("id") String id){
-
-        String result = service.getUserJSON(id);
+    public String getUser( @PathParam("username") String username){
+        String result = service.getUserJSON(username);
 
         if( result == null )
             throw new NotFoundException();
 
         return result;
+    }
+
+    @POST
+    @Consumes("application/json")
+    public Response createUser(String userJson) {
+        try {
+            User user = new ObjectMapper().readValue(userJson, User.class);
+
+            service.addUser(user);
+
+            URI location = new URI("/users/" + user.getUsername());
+            return Response.created(location).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
 }
 

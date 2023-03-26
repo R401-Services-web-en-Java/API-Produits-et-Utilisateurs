@@ -23,28 +23,25 @@ public class UserAndProductsRepositoryMariadb implements UserAndProductsReposito
     }
 
     @Override
-    public User getUser(String id) {
+    public User getUser(String username) {
         User selectedUser = null;
 
-        String query = "SELECT * FROM User WHERE id=?";
+        String query = "SELECT * FROM USERS WHERE username=?";
 
-        // construction et exécution d'une requête préparée
         try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
-            ps.setString(1, id);
+            ps.setString(1, username);
 
-            // exécution de la requête
             ResultSet result = ps.executeQuery();
 
-            // récupération du premier (et seul) tuple résultat
-            // (si la référence du user est valide)
             if( result.next() )
             {
-                String name = result.getString("name");
-                String pwd = result.getString("pwd");
+                String firstname = result.getString("firstname");
+                String lastname = result.getString("lastname");
                 String mail = result.getString("mail");
+                String password = result.getString("password");
+                String role = result.getString("role");
 
-                // création et initialisation de l'objet Book
-                selectedUser = new User(name, pwd, mail);
+                selectedUser = new User(username, firstname, lastname, mail, password, role);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -56,30 +53,45 @@ public class UserAndProductsRepositoryMariadb implements UserAndProductsReposito
     public ArrayList<User> getAllUsers() {
         ArrayList<User> listUsers ;
 
-        String query = "SELECT * FROM User";
+        String query = "SELECT * FROM USERS";
 
-        // construction et exécution d'une requête préparée
         try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
-            // exécution de la requête
             ResultSet result = ps.executeQuery();
-
             listUsers = new ArrayList<>();
 
-            // récupération du premier (et seul) tuple résultat
             while ( result.next() )
             {
-                String name = result.getString("name");
-                String pwd = result.getString("pwd");
+                String username = result.getString("username");
+                String firstname = result.getString("firstname");
+                String lastname = result.getString("lastname");
                 String mail = result.getString("mail");
+                String password = result.getString("password");
+                String role = result.getString("role");
 
-                // création du user courant
-                User currentUser = new User(name, pwd, mail);
-
+                User currentUser = new User(username, firstname, lastname, mail, password, role);
                 listUsers.add(currentUser);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return listUsers;
+    }
+
+    @Override
+    public void addUser(User user) {
+        String query = "INSERT INTO USERS (username, firstname, lastname, mail, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getFirstname());
+            ps.setString(3, user.getLastname());
+            ps.setString(4, user.getMail());
+            ps.setString(5, user.getPassword());
+            ps.setString(6, user.getRole());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

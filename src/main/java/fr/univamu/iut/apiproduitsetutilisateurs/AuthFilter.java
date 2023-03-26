@@ -19,7 +19,6 @@ public class AuthFilter implements ContainerRequestFilter {
         String token = authHeader.substring("Bearer".length()).trim();
 
         try {
-            // Validate the token
             validateToken(token);
         } catch (Exception e) {
             requestContext.abortWith(
@@ -28,9 +27,7 @@ public class AuthFilter implements ContainerRequestFilter {
     }
 
     private void validateToken(String token) throws Exception {
-        // Check if it was issued by the server and if it's not expired
-        // Throw an Exception if the token is invalid
-        if (!token.equals("1")) {
+        if (!token.equals("token")) {
             throw new Exception("Invalid token");
         }
     }

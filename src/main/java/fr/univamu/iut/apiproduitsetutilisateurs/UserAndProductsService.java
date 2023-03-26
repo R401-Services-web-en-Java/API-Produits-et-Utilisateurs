@@ -6,27 +6,21 @@ import jakarta.json.bind.JsonbBuilder;
 import java.util.ArrayList;
 
 public class UserAndProductsService {
-    protected UserAndProductsRepositoryInterface userRepo ;
+    protected UserAndProductsRepositoryInterface userAndProductsRepo;
 
-    public UserAndProductsService(UserAndProductsRepositoryInterface userRepo) {
-        this.userRepo = userRepo;
+    public UserAndProductsService(UserAndProductsRepositoryInterface userAndProductsRepo) {
+        this.userAndProductsRepo = userAndProductsRepo;
     }
 
-    /**
-     * Méthode retournant les informations (sans mail et mot de passe) sur les utilisateurs au format JSON
-     * @return une chaîne de caractère contenant les informations au format JSON
-     */
     public String getAllUsersJSON(){
 
-        ArrayList<User> allUsers = userRepo.getAllUsers();
+        ArrayList<User> allUsers = userAndProductsRepo.getAllUsers();
 
-        // on supprime les informations sur les mots de passe et les mails
         for( User currentUser : allUsers ){
             currentUser.setMail("");
-            currentUser.setPwd("");
+            currentUser.setPassword("");
         }
 
-        // création du json et conversion de la liste de livres
         String result = null;
         try( Jsonb jsonb = JsonbBuilder.create()){
             result = jsonb.toJson(allUsers);
@@ -38,19 +32,11 @@ public class UserAndProductsService {
         return result;
     }
 
-    /**
-     * Méthode retournant au format JSON les informations sur un utilisateur recherché
-     * @param id l'identifiant de l'utilisateur recherché
-     * @return une chaîne de caractère contenant les informations au format JSON
-     */
-    public String getUserJSON( String id ){
+    public String getUserJSON( String username ){
         String result = null;
-        User myUser = userRepo.getUser(id);
+        User myUser = userAndProductsRepo.getUser(username);
 
-        // si le livre a été trouvé
         if( myUser != null ) {
-
-            // création du json et conversion du livre
             try (Jsonb jsonb = JsonbBuilder.create()) {
                 result = jsonb.toJson(myUser);
             } catch (Exception e) {
@@ -59,4 +45,13 @@ public class UserAndProductsService {
         }
         return result;
     }
+
+    public void addUser(User user) {
+        if (userAndProductsRepo.getUser(user.getUsername()) != null) {
+            throw new RuntimeException("User already exists");
+        }
+
+        userAndProductsRepo.addUser(user);
+    }
+
 }

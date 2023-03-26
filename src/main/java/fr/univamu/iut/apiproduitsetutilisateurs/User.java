@@ -1,45 +1,51 @@
 package fr.univamu.iut.apiproduitsetutilisateurs;
 
 public class User {
-    protected String id;
+    protected String username;
 
-    protected String name;
+    protected String firstname;
 
-    protected String pwd;
+    protected String lastname;
 
     protected String mail;
 
-    public User() {
-    }
+    protected String password;
 
-    public User(String name, String pwd, String mail) {
-        this.name = name;
-        this.pwd = pwd;
+    protected String role;
+
+    public User() {}
+
+    public User(String username, String firstname, String lastname, String mail, String password, String role) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.mail = mail;
+        this.password = password;
+        this.role = role;
     }
 
-    public String getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getMail() {
@@ -50,13 +56,19 @@ public class User {
         this.mail = mail;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", pwd='" + pwd + '\'' +
-                ", mail='" + mail + '\'' +
-                '}';
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

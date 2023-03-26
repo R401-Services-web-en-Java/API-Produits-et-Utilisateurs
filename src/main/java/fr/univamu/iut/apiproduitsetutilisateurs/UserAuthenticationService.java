@@ -1,39 +1,21 @@
 package fr.univamu.iut.apiproduitsetutilisateurs;
 
-/**
- * Classe représentant le cas d'utilisation "authentifier un utilisateur"
- */
 public class UserAuthenticationService {
 
-    /**
-     * Objet permettant d'accéder au dépôt où sont stockées les informations sur les utilisateurs
-     */
-    protected UserAndProductsRepositoryInterface userRepo ;
+    protected UserAndProductsRepositoryInterface userAndProductsRepo;
 
-    /**
-     * Constructeur permettant d'injecter l'accès aux données
-     * @param userRepo objet implémentant l'interface d'accès aux données
-     */
-    public UserAuthenticationService(UserAndProductsRepositoryInterface userRepo) {
-        this.userRepo = userRepo;
+    public UserAuthenticationService(UserAndProductsRepositoryInterface userAndProductsRepo) {
+        this.userAndProductsRepo = userAndProductsRepo;
     }
 
-    /**
-     * Méthode d'authentifier un utilisateur
-     * @param id identifiant de l'utilisateur
-     * @param pwd mot de passe de l'utilisateur
-     * @return true si l'utilisateur a été authentifié, false sinon
-     */
-    public boolean isValidUser( String id, String pwd){
+    public boolean isValidUser( String username, String password){
 
-        User currentUser = userRepo.getUser( id );
+        User currentUser = userAndProductsRepo.getUser(username);
 
-        // si l'utilisateur n'a pas été trouvé
         if( currentUser == null )
             return false;
 
-        // si le mot de passe n'est pas correcte
-        if( ! currentUser.pwd.equals(pwd) )
+        if( ! currentUser.password.equals(password) )
             return false;
 
         return true;
