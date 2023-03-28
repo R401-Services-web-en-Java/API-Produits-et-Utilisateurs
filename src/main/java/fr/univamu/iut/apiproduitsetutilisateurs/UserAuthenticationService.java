@@ -2,22 +2,25 @@ package fr.univamu.iut.apiproduitsetutilisateurs;
 
 public class UserAuthenticationService {
 
-    protected UserAndProductsRepositoryInterface userAndProductsRepo;
+    protected UserAndProductsRepositoryInterface userRepo ;
 
-    public UserAuthenticationService(UserAndProductsRepositoryInterface userAndProductsRepo) {
-        this.userAndProductsRepo = userAndProductsRepo;
+    public UserAuthenticationService(UserAndProductsRepositoryInterface userRepo) {
+        this.userRepo = userRepo;
     }
 
-    public boolean isValidUser( String username, String password){
+    public boolean isValidUser( String username, String pwd){
 
-        User currentUser = userAndProductsRepo.getUser(username);
+        User currentUser = userRepo.getUser(username);
 
+        // si l'utilisateur n'a pas été trouvé
         if( currentUser == null )
             return false;
 
-        if( ! currentUser.password.equals(password) )
+        // si le mot de passe n'est pas correcte
+        if( ! currentUser.password.equals(pwd) )
             return false;
 
         return true;
     }
 }
+

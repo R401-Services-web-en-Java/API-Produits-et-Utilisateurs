@@ -1,5 +1,7 @@
 package fr.univamu.iut.apiproduitsetutilisateurs;
 
+import jakarta.ws.rs.NotFoundException;
+
 import java.io.Closeable;
 import java.sql.*;
 import java.util.ArrayList;
@@ -90,6 +92,40 @@ public class UserAndProductsRepositoryMariadb implements UserAndProductsReposito
             ps.setString(6, user.getRole());
 
             ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        String query = "DELETE FROM USERS WHERE username = ?";
+
+        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
+            ps.setString(1, username);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void modifyUser(User user) {
+        String query = "UPDATE USERS SET firstname = ?, lastname = ?, mail = ?, password = ?, role = ? WHERE username = ?";
+
+        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
+            ps.setString(1, user.getFirstname());
+            ps.setString(2, user.getLastname());
+            ps.setString(3, user.getMail());
+            ps.setString(4, user.getPassword());
+            ps.setString(5, user.getRole());
+            ps.setString(6, user.getUsername());
+
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 0) {
+                throw new NotFoundException("User with username " + user.getUsername() + " not found");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -44,7 +44,7 @@ public class UserAndProductsApplication extends Application {
         }
 
         set.add(new UserResource(service));
-        set.add(new AuthFilter());
+        //set.add(new AuthFilter());
 
         return set;
     }

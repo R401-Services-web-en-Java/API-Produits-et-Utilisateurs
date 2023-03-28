@@ -2,6 +2,7 @@ package fr.univamu.iut.apiproduitsetutilisateurs;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import jakarta.ws.rs.NotFoundException;
 
 import java.util.ArrayList;
 
@@ -50,8 +51,20 @@ public class UserAndProductsService {
         if (userAndProductsRepo.getUser(user.getUsername()) != null) {
             throw new RuntimeException("User already exists");
         }
-
         userAndProductsRepo.addUser(user);
     }
 
+    public void deleteUser(String username) {
+        if (userAndProductsRepo.getUser(username) == null) {
+            throw new NotFoundException();
+        }
+        userAndProductsRepo.deleteUser(username);
+    }
+
+    public void modifyUser(User user) {
+        if (userAndProductsRepo.getUser(user.getUsername()) == null) {
+            throw new NotFoundException();
+        }
+        userAndProductsRepo.modifyUser(user);
+    }
 }

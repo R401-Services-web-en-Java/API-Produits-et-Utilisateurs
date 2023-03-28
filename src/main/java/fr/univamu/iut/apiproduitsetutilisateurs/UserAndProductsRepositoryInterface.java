@@ -9,5 +9,9 @@ public interface UserAndProductsRepositoryInterface {
 
     public void addUser(User user);
 
+    public void deleteUser(String username);
+
+    public void modifyUser(User user);
+
     public void close();
 }

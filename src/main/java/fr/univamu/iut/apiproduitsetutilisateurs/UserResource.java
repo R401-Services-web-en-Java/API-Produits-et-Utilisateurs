@@ -56,5 +56,28 @@ public class UserResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
+
+    @DELETE
+    @Path("{username}")
+    public Response deleteUser(@PathParam("username") String username) {
+        service.deleteUser(username);
+        return Response.noContent().build();
+    }
+
+    @PUT
+    @Path("{username}")
+    @Consumes("application/json")
+    public Response modifyUser(@PathParam("username") String username, String userJson) {
+        try {
+            User user = new ObjectMapper().readValue(userJson, User.class);
+            user.setUsername(username);
+
+            service.modifyUser(user);
+
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
 }
 
