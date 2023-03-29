@@ -23,7 +23,7 @@ public class UserAuthenticationResource {
 
     public UserAuthenticationResource(){}
 
-    public @Inject UserAuthenticationResource(UserAndProductsRepositoryInterface userAndProductsRepo ){
+    public @Inject UserAuthenticationResource(UserProductsRepositoryInterface userAndProductsRepo ){
         this.auth = new UserAuthenticationService( userAndProductsRepo ) ;
     }
 

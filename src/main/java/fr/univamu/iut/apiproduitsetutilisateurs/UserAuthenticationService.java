@@ -2,9 +2,9 @@ package fr.univamu.iut.apiproduitsetutilisateurs;
 
 public class UserAuthenticationService {
 
-    protected UserAndProductsRepositoryInterface userAndProductsRepo ;
+    protected UserProductsRepositoryInterface userAndProductsRepo ;
 
-    public UserAuthenticationService(UserAndProductsRepositoryInterface userAndProductsRepo) {
+    public UserAuthenticationService(UserProductsRepositoryInterface userAndProductsRepo) {
         this.userAndProductsRepo = userAndProductsRepo;
     }
 

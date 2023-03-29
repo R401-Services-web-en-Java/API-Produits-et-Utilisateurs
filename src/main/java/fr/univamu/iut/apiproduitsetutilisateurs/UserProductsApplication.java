@@ -11,14 +11,14 @@ import java.util.Set;
 
 @ApplicationPath("/api")
 @ApplicationScoped
-public class UserAndProductsApplication extends Application {
+public class UserProductsApplication extends Application {
 
     @Produces
-    private UserAndProductsRepositoryInterface openDbConnection(){
-        UserAndProductsRepositoryMariadb db = null;
+    private UserProductsRepositoryInterface openDbConnection(){
+        UserProductsRepositoryMariadb db = null;
 
         try{
-            db = new UserAndProductsRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
+            db = new UserProductsRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
         }
         catch (Exception e){
             System.err.println(e.getMessage());
@@ -26,7 +26,7 @@ public class UserAndProductsApplication extends Application {
         return db;
     }
 
-    private void closeDbConnection(@Disposes UserAndProductsRepositoryInterface userAndProductsRepo ) {
+    private void closeDbConnection(@Disposes UserProductsRepositoryInterface userAndProductsRepo ) {
         userAndProductsRepo.close();
     }
 
@@ -34,14 +34,15 @@ public class UserAndProductsApplication extends Application {
     public Set<Object> getSingletons() {
         Set<Object> set = new HashSet<>();
 
-        UserAndProductsRepositoryMariadb db = null;
+        UserProductsRepositoryMariadb db = null;
         try {
-            db = new UserAndProductsRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
+            db = new UserProductsRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
 
-        set.add(new UserResource(new UserAndProductsService(db)));
+        set.add(new UserResource(new UserProductsService(db)));
+        set.add(new ProductsResource(new UserProductsService(db)));
         set.add(new UserAuthenticationResource(db));
         //set.add(new AuthFilter());
 

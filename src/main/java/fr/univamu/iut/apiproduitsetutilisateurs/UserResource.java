@@ -12,15 +12,15 @@ import java.net.URI;
 @ApplicationScoped
 public class UserResource {
 
-    private UserAndProductsService service;
+    private UserProductsService service;
 
     public UserResource(){}
 
-    public @Inject UserResource(UserAndProductsRepositoryInterface userRepo ){
-        this.service = new UserAndProductsService( userRepo) ;
+    public @Inject UserResource(UserProductsRepositoryInterface userAndProductsRep ){
+        this.service = new UserProductsService( userAndProductsRep) ;
     }
 
-    public UserResource( UserAndProductsService service ){
+    public UserResource( UserProductsService service ){
         this.service = service;
     }
 
@@ -72,7 +72,7 @@ public class UserResource {
             User user = new ObjectMapper().readValue(userJson, User.class);
             user.setUsername(username);
 
-            service.modifyUser(user);
+            service.updateUser(user);
 
             return Response.ok().build();
         } catch (Exception e) {
