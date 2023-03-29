@@ -41,10 +41,11 @@ public class UserProductsApplication extends Application {
             System.err.println(e.getMessage());
         }
 
+        set.add(new AuthFilter());
         set.add(new UserResource(new UserProductsService(db)));
         set.add(new ProductsResource(new UserProductsService(db)));
         set.add(new UserAuthenticationResource(db));
-        //set.add(new AuthFilter());
+
 
         return set;
     }
