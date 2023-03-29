@@ -21,23 +21,12 @@ public class UserAuthenticationResource {
      */
     private UserAuthenticationService auth;
 
-    /**
-     * Constructeur par défaut
-     */
     public UserAuthenticationResource(){}
 
-    /**
-     * Constructeur permettant d'initialiser le service avec une interface d'accès aux données
-     * @param userRepo objet implémentant l'interface d'accès aux données
-     */
-    public @Inject UserAuthenticationResource(UserAndProductsRepositoryInterface userRepo ){
-        this.auth = new UserAuthenticationService( userRepo ) ;
+    public @Inject UserAuthenticationResource(UserAndProductsRepositoryInterface userAndProductsRepo ){
+        this.auth = new UserAuthenticationService( userAndProductsRepo ) ;
     }
 
-    /**
-     * Enpoint permettant de publier de tous les utilisateurs enregistrés
-     * @return la liste des utilisateurs (avec leurs informations) au format JSON
-     */
     @GET
     @Produces("text/plain")
     public Response authenticate(@Context ContainerRequestContext requestContext) throws UnsupportedEncodingException {

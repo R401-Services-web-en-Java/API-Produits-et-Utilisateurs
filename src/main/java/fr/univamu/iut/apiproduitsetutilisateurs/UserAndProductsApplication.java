@@ -34,19 +34,19 @@ public class UserAndProductsApplication extends Application {
     public Set<Object> getSingletons() {
         Set<Object> set = new HashSet<>();
 
-        UserAndProductsService service = null ;
-        try{
-            UserAndProductsRepositoryMariadb db = new UserAndProductsRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
-            service = new UserAndProductsService(db);
-        }
-        catch (Exception e){
+        UserAndProductsRepositoryMariadb db = null;
+        try {
+            db = new UserAndProductsRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
 
-        set.add(new UserResource(service));
+        set.add(new UserResource(new UserAndProductsService(db)));
+        set.add(new UserAuthenticationResource(db));
         //set.add(new AuthFilter());
 
         return set;
     }
+
 }
 
