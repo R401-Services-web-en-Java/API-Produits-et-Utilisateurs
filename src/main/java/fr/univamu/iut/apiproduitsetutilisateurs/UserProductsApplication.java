@@ -1,11 +1,14 @@
 package fr.univamu.iut.apiproduitsetutilisateurs;
 
-import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryInterface;
-import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryMariadb;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.ProductsRepositoryInterface;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.ProductsRepositoryMariadb;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserRepositoryInterface;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserRepositoryMariadb;
 import fr.univamu.iut.apiproduitsetutilisateurs.ressources.ProductsResource;
 import fr.univamu.iut.apiproduitsetutilisateurs.ressources.UserAuthenticationResource;
 import fr.univamu.iut.apiproduitsetutilisateurs.ressources.UserResource;
-import fr.univamu.iut.apiproduitsetutilisateurs.services.UserProductsService;
+import fr.univamu.iut.apiproduitsetutilisateurs.services.ProductsService;
+import fr.univamu.iut.apiproduitsetutilisateurs.services.UserService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;
@@ -20,11 +23,11 @@ import java.util.Set;
 public class UserProductsApplication extends Application {
 
     @Produces
-    private UserProductsRepositoryInterface openDbConnection(){
-        UserProductsRepositoryMariadb db = null;
+    private UserRepositoryInterface openDbUserConnection(){
+        UserRepositoryMariadb db = null;
 
         try{
-            db = new UserProductsRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
+            db = new UserRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
         }
         catch (Exception e){
             System.err.println(e.getMessage());
@@ -32,7 +35,20 @@ public class UserProductsApplication extends Application {
         return db;
     }
 
-    private void closeDbConnection(@Disposes UserProductsRepositoryInterface userAndProductsRepo ) {
+    @Produces
+    private ProductsRepositoryInterface openDbProductsConnection(){
+        ProductsRepositoryMariadb db = null;
+
+        try{
+            db = new ProductsRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
+        }
+        catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+        return db;
+    }
+
+    private void closeDbConnection(@Disposes UserRepositoryInterface userAndProductsRepo ) {
         userAndProductsRepo.close();
     }
 
@@ -40,17 +56,24 @@ public class UserProductsApplication extends Application {
     public Set<Object> getSingletons() {
         Set<Object> set = new HashSet<>();
 
-        UserProductsRepositoryMariadb db = null;
+        UserRepositoryMariadb dbUser = null;
         try {
-            db = new UserProductsRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
+            dbUser = new UserRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        ProductsRepositoryMariadb dbProducts = null;
+        try {
+            dbProducts = new ProductsRepositoryMariadb("jdbc:mariadb://mysql-fred.alwaysdata.net/fred_api_users_products", "fred_api_project", "Frederic13!");
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
 
         set.add(new AuthFilter());
-        set.add(new UserResource(new UserProductsService(db)));
-        set.add(new ProductsResource(new UserProductsService(db)));
-        set.add(new UserAuthenticationResource(db));
+        set.add(new UserResource(new UserService(dbUser)));
+        set.add(new ProductsResource(new ProductsService(dbProducts)));
+        set.add(new UserAuthenticationResource(dbUser));
 
 
         return set;

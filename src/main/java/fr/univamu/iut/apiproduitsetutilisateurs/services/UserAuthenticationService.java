@@ -1,13 +1,13 @@
 package fr.univamu.iut.apiproduitsetutilisateurs.services;
 
 import fr.univamu.iut.apiproduitsetutilisateurs.domain.User;
-import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryInterface;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserRepositoryInterface;
 
 public class UserAuthenticationService {
 
-    protected UserProductsRepositoryInterface userAndProductsRepo ;
+    protected UserRepositoryInterface userAndProductsRepo ;
 
-    public UserAuthenticationService(UserProductsRepositoryInterface userAndProductsRepo) {
+    public UserAuthenticationService(UserRepositoryInterface userAndProductsRepo) {
         this.userAndProductsRepo = userAndProductsRepo;
     }
 

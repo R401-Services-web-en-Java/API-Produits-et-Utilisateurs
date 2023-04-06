@@ -2,8 +2,8 @@ package fr.univamu.iut.apiproduitsetutilisateurs.ressources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univamu.iut.apiproduitsetutilisateurs.domain.User;
-import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryInterface;
-import fr.univamu.iut.apiproduitsetutilisateurs.services.UserProductsService;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserRepositoryInterface;
+import fr.univamu.iut.apiproduitsetutilisateurs.services.UserService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -15,15 +15,15 @@ import java.net.URI;
 @ApplicationScoped
 public class UserResource {
 
-    private UserProductsService service;
+    private UserService service;
 
     public UserResource(){}
 
-    public @Inject UserResource(UserProductsRepositoryInterface userAndProductsRep ){
-        this.service = new UserProductsService( userAndProductsRep) ;
+    public @Inject UserResource(UserRepositoryInterface userAndProductsRep ){
+        this.service = new UserService( userAndProductsRep) ;
     }
 
-    public UserResource( UserProductsService service ){
+    public UserResource( UserService service ){
         this.service = service;
     }
 

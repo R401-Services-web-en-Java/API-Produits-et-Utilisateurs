@@ -1,7 +1,7 @@
 package fr.univamu.iut.apiproduitsetutilisateurs.ressources;
 
 import fr.univamu.iut.apiproduitsetutilisateurs.services.UserAuthenticationService;
-import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryInterface;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserRepositoryInterface;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
@@ -23,8 +23,8 @@ public class UserAuthenticationResource {
 
     public UserAuthenticationResource(){}
 
-    public @Inject UserAuthenticationResource(UserProductsRepositoryInterface userAndProductsRepo ){
-        this.auth = new UserAuthenticationService( userAndProductsRepo ) ;
+    public @Inject UserAuthenticationResource(UserRepositoryInterface userRepo ){
+        this.auth = new UserAuthenticationService( userRepo ) ;
     }
 
     @POST
