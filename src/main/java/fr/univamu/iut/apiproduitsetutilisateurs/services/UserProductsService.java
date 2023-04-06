@@ -1,5 +1,8 @@
-package fr.univamu.iut.apiproduitsetutilisateurs;
+package fr.univamu.iut.apiproduitsetutilisateurs.services;
 
+import fr.univamu.iut.apiproduitsetutilisateurs.domain.Products;
+import fr.univamu.iut.apiproduitsetutilisateurs.domain.User;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryInterface;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.ws.rs.NotFoundException;

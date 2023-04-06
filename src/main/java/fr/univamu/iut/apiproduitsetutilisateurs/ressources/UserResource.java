@@ -1,6 +1,9 @@
-package fr.univamu.iut.apiproduitsetutilisateurs;
+package fr.univamu.iut.apiproduitsetutilisateurs.ressources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.univamu.iut.apiproduitsetutilisateurs.domain.User;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryInterface;
+import fr.univamu.iut.apiproduitsetutilisateurs.services.UserProductsService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

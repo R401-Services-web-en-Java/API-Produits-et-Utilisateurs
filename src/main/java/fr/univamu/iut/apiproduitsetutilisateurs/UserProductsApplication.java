@@ -1,5 +1,11 @@
 package fr.univamu.iut.apiproduitsetutilisateurs;
 
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryInterface;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryMariadb;
+import fr.univamu.iut.apiproduitsetutilisateurs.ressources.ProductsResource;
+import fr.univamu.iut.apiproduitsetutilisateurs.ressources.UserAuthenticationResource;
+import fr.univamu.iut.apiproduitsetutilisateurs.ressources.UserResource;
+import fr.univamu.iut.apiproduitsetutilisateurs.services.UserProductsService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;

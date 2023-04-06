@@ -1,4 +1,7 @@
-package fr.univamu.iut.apiproduitsetutilisateurs;
+package fr.univamu.iut.apiproduitsetutilisateurs.services;
+
+import fr.univamu.iut.apiproduitsetutilisateurs.domain.User;
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryInterface;
 
 public class UserAuthenticationService {
 

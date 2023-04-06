@@ -1,4 +1,7 @@
-package fr.univamu.iut.apiproduitsetutilisateurs;
+package fr.univamu.iut.apiproduitsetutilisateurs.model;
+
+import fr.univamu.iut.apiproduitsetutilisateurs.domain.Products;
+import fr.univamu.iut.apiproduitsetutilisateurs.domain.User;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package fr.univamu.iut.apiproduitsetutilisateurs;
+package fr.univamu.iut.apiproduitsetutilisateurs.domain;
 
 public class Products {
     protected String name;

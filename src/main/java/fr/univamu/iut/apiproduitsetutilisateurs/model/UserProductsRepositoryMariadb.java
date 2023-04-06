@@ -1,5 +1,8 @@
-package fr.univamu.iut.apiproduitsetutilisateurs;
+package fr.univamu.iut.apiproduitsetutilisateurs.model;
 
+import fr.univamu.iut.apiproduitsetutilisateurs.model.UserProductsRepositoryInterface;
+import fr.univamu.iut.apiproduitsetutilisateurs.domain.Products;
+import fr.univamu.iut.apiproduitsetutilisateurs.domain.User;
 import jakarta.ws.rs.NotFoundException;
 
 import java.io.Closeable;
