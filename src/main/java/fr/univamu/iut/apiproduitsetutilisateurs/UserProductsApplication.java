@@ -18,10 +18,20 @@ import jakarta.ws.rs.core.Application;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Application class for the User Products API. Configures and provides resources and services for handling
+ * user and product operations.
+ */
 @ApplicationPath("/api")
 @ApplicationScoped
 public class UserProductsApplication extends Application {
 
+    /**
+     * Produces an instance of UserRepositoryInterface for handling user database operations.
+     * Creates a new UserRepositoryMariadb instance with the database connection information.
+     *
+     * @return An instance of UserRepositoryInterface.
+     */
     @Produces
     private UserRepositoryInterface openDbUserConnection(){
         UserRepositoryMariadb db = null;
@@ -35,6 +45,12 @@ public class UserProductsApplication extends Application {
         return db;
     }
 
+    /**
+     * Produces an instance of ProductsRepositoryInterface for handling product database operations.
+     * Creates a new ProductsRepositoryMariadb instance with the database connection information.
+     *
+     * @return An instance of ProductsRepositoryInterface.
+     */
     @Produces
     private ProductsRepositoryInterface openDbProductsConnection(){
         ProductsRepositoryMariadb db = null;
@@ -48,10 +64,31 @@ public class UserProductsApplication extends Application {
         return db;
     }
 
-    private void closeDbConnection(@Disposes UserRepositoryInterface userAndProductsRepo ) {
-        userAndProductsRepo.close();
+    /**
+     * Closes the user database connection when the UserRepositoryInterface instance is disposed.
+     *
+     * @param userRepo The UserRepositoryInterface instance to be disposed.
+     */
+    private void closeDbUserConnection(@Disposes UserRepositoryInterface userRepo ) {
+        userRepo.close();
     }
 
+    /**
+     * Closes the product database connection when the ProductsRepositoryInterface instance is disposed.
+     *
+     * @param productsRepo The ProductsRepositoryInterface instance to be disposed.
+     */
+    private void closeDbProductsConnection(@Disposes ProductsRepositoryInterface productsRepo ) {
+        productsRepo.close();
+    }
+
+    /**
+     * Returns a set of singleton resources to be used in the application.
+     * Creates and adds instances of AuthFilter, UserResource, ProductsResource, and UserAuthenticationResource
+     * to the set, with appropriate dependencies injected.
+     *
+     * @return A set of singleton resources.
+     */
     @Override
     public Set<Object> getSingletons() {
         Set<Object> set = new HashSet<>();
@@ -75,9 +112,7 @@ public class UserProductsApplication extends Application {
         set.add(new ProductsResource(new ProductsService(dbProducts)));
         set.add(new UserAuthenticationResource(dbUser));
 
-
         return set;
     }
-
 }
 

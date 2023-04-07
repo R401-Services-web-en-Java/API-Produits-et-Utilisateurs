@@ -2,17 +2,39 @@ package fr.univamu.iut.apiproduitsetutilisateurs.model;
 
 import fr.univamu.iut.apiproduitsetutilisateurs.domain.Products;
 
+import java.io.Closeable;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ProductsRepositoryMariadb implements ProductsRepositoryInterface {
+/**
+ * Implementation of ProductsRepositoryInterface that interacts with products data stored in MariaDB.
+ * Provides methods to perform CRUD (Create, Read, Update, Delete) operations on products data.
+ * Implements Closeable interface to enable closing of the database connection.
+ */
+public class ProductsRepositoryMariadb implements ProductsRepositoryInterface, Closeable {
+    /**
+     * The connection to the database.
+     */
     protected Connection dbConnection ;
 
+    /**
+     * Constructor for ProductsRepositoryMariadb.
+     *
+     * @param infoConnection The connection information for the MariaDB database.
+     * @param user The username for connecting to the database.
+     * @param pwd The password for connecting to the database.
+     * @throws SQLException If an error occurs while connecting to the database.
+     * @throws ClassNotFoundException If the MariaDB JDBC driver class is not found.
+     */
     public ProductsRepositoryMariadb(String infoConnection, String user, String pwd ) throws SQLException, ClassNotFoundException {
         Class.forName("org.mariadb.jdbc.Driver");
         dbConnection = DriverManager.getConnection( infoConnection, user, pwd ) ;
     }
 
+    /**
+     * Closes the connection to the database.
+     * Overrides the close() method from Closeable interface.
+     */
     @Override
     public void close() {
         try{
@@ -22,6 +44,12 @@ public class ProductsRepositoryMariadb implements ProductsRepositoryInterface {
             System.err.println(e.getMessage());
         }
     }
+
+    /**
+     * Get all products from the database.
+     *
+     * @return An ArrayList of Products containing all products in the database.
+     */
     @Override
     public ArrayList<Products> getAllProducts() {
         ArrayList<Products> listProducts ;
@@ -48,6 +76,12 @@ public class ProductsRepositoryMariadb implements ProductsRepositoryInterface {
         return listProducts;
     }
 
+    /**
+     * Get a product from the database by its name.
+     *
+     * @param name The name of the product to retrieve.
+     * @return The Product object corresponding to the given name, or null if not found.
+     */
     @Override
     public Products getProduct(String name) {
         Products selectedProduct = null;
@@ -73,6 +107,11 @@ public class ProductsRepositoryMariadb implements ProductsRepositoryInterface {
         return selectedProduct;
     }
 
+    /**
+     * Add a product to the database.
+     *
+     * @param product The Product object to add.
+     */
     @Override
     public void addProduct(Products product) {
         String query = "INSERT INTO PRODUCTS (name, quantity_stock, price, unit) VALUES(?, ?, ?, ?)";
@@ -88,7 +127,11 @@ public class ProductsRepositoryMariadb implements ProductsRepositoryInterface {
         }
     }
 
-
+    /**
+     * Update a product in the database.
+     *
+     * @param product The Product object to update.
+     */
     @Override
     public void updateProduct(Products product) {
         String query = "UPDATE PRODUCTS SET name=?, quantity_stock=?, price=?, unit=? WHERE name=?";
@@ -105,6 +148,11 @@ public class ProductsRepositoryMariadb implements ProductsRepositoryInterface {
         }
     }
 
+    /**
+     * Delete a product from the database.
+     *
+     * @param name The name of the product to delete.
+     */
     @Override
     public void deleteProduct(String name) {
         String query = "DELETE FROM PRODUCTS WHERE name=?";
