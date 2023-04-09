@@ -46,7 +46,7 @@ public class AuthFilter implements ContainerRequestFilter {
      * @param token The Bearer token to be validated.
      * @throws Exception If the token is invalid.
      */
-    private void validateToken(String token) throws Exception {
+    void validateToken(String token) throws Exception {
         if (!token.equals("token")) {
             throw new Exception("Invalid token");
         }
